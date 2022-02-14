@@ -1,0 +1,17 @@
+{
+  "name": "eventmaster_db_service",
+  "version": "1.0.0",
+  "description": "Service for database access",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build"
+  },
+  "author": "Jeskay",
+  "license": "MIT",
+  "private": true
+}
