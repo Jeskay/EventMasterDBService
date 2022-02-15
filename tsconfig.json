@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
       "experimentalDecorators": true,
+      "emitDecoratorMetadata": true,
       "declaration": true,
       "strictNullChecks": true,
       "target": "es6", 
@@ -8,9 +9,9 @@
       "module": "commonjs",
       "moduleResolution": "node",
       "sourceMap": true,
-      "lib": ["es2017", "dom"],
+      "lib": ["es2017", "dom", "ES6"],
       "rootDir": "src"
     },
     "include": ["src"],
     "exclude": ["node_modules", "dist"]
-  }
+}

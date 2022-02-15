@@ -17,7 +17,6 @@ export class ServerInterface {
         return this.connection.manager.create(Server, {
             guild: id,
             settings: new Settings(...settings),
-            events: [],
             description: description || "empty"
         });
     }

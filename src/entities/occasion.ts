@@ -1,6 +1,12 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn } from "typeorm";
 import {Server} from "./server";
-import {OccasionState} from "../Controllers";
+
+export enum OccasionState{
+    voting,
+    waiting,
+    playing,
+    finished
+}
 
 @Entity()
 export class Occasion {
