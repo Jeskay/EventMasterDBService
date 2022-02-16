@@ -270,7 +270,6 @@ export class DataBaseManager{
             if(!Object.keys(instance).includes('id')) throw new Error("Player id must be provided.");
             const result = await this.getPlayer(instance['id']);
             if(!result) throw new Error("Cannot find the player.");
-            console.log(Object.keys(result));//debug
             Object.keys(result).forEach(key => result[key] = key in instance ? instance[key] : result[key]);
             player = result;
         }
