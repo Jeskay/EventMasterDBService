@@ -16,7 +16,7 @@ export class Commend {
     cheer: boolean;
 
     @Column()
-    duplicates: number;
+    duplicates: number = 0;
 
     @ManyToOne(() => Player, player => player.commendsBy, {primary: true})
     @JoinColumn({name: "authorId"})

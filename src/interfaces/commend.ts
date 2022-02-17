@@ -41,7 +41,7 @@ export class CommendInterface {
     * @param commend Commend instance
     */
     public async post(commend: Commend) {
-        await this.connection.manager.save(commend);
+        return await this.connection.manager.save(commend);
     }
 
     /**
@@ -57,8 +57,8 @@ export class CommendInterface {
      * @param params object with Commend fields, describing search parameters
      * @returns Commends matched parameters
      */
-    public async search( params: object) {
-        await this.connection.manager.find(Commend, params);
+    public async search( params: object): Promise<Commend[]> {
+        return await this.connection.getRepository(Commend).find(params);
     }
 
     constructor(connection: Connection) {

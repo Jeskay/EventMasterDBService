@@ -20,7 +20,7 @@ export class PlayerInterface {
     public async get(id: string, loadRelations: boolean = false) {
         if(!loadRelations) 
             return this.connection.manager.findOne(Player, {id: id});
-        return await this.connection.getRepository(Player)
+        else return await this.connection.getRepository(Player)
         .createQueryBuilder("player")
         .leftJoinAndSelect("player.subscriptions", "tag")
         .where("player.id = :id", {id: id})

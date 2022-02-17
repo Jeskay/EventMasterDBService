@@ -19,7 +19,7 @@ export class TagInterface {
      */
     public async post(tag: Tag): Promise<Tag> {
         const instance = await this.connection.manager.findOne(Tag, {title: tag.title});
-        if(!instance) throw new Error("Tag with followed id is not registered.");
+        if(instance) throw new Error("This tag is already registered");
         return await this.connection.manager.save(tag);
     }
 
@@ -30,12 +30,21 @@ export class TagInterface {
     
     /**
      * Removes tag
-     * @param title tag id
+     * @param tag tag instance
      */
-    public async remove(title: string) {
-        const tag = await this.get(title);
-        if(!tag) throw new Error("Tag does not exist.");
-        return await this.connection.manager.remove(tag);
+    public async remove(tag: Tag): Promise<Tag>;
+    /**
+     * Removes tag
+     * @param title title of tag
+     */
+    public async remove(title: string): Promise<Tag>;
+
+    public async remove(tag: string | Tag) {
+        if(tag instanceof Tag)
+            return await this.connection.manager.remove(tag);
+        const instance = await this.get(tag);
+        if(!instance) throw new Error("Tag does not exist.");
+        return await this.connection.manager.remove(instance);
     }
     constructor(connection: Connection) {
         this.connection = connection;
