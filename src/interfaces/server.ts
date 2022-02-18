@@ -118,8 +118,7 @@ export class ServerInterface {
         }
         else return await this.connection.manager.getRepository(Player)
             .createQueryBuilder("player")
-            .leftJoinAndSelect("player.commendsBy", "commend", "commend.author = id")
-            .leftJoinAndSelect("player.commendsAbout",  "commend2", "commend2.subject = id")
+            .orderBy("score", "DESC")
             .getMany();
     }
     

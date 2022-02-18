@@ -11,8 +11,8 @@ afterAll(async () =>{
 });
 
 describe('', () =>{
-    const id1 = "111";
-    const id2 = "222";
+    const id1 = "commend111";
+    const id2 = "commend222";
 
     beforeEach(async () => {
         await connection.clear();

@@ -6,14 +6,15 @@ export class PlayerInterface {
     
     /** Creates Player instance */
     public create(id: string): Player;
-    public create(id: string, eventsPlayed?: number, eventsHosted?: number, minutesPlayed?: number): Player;
+    public create(id: string, eventsPlayed?: number, eventsHosted?: number, minutesPlayed?: number, score?: number): Player;
 
-    public create(id: string, eventsPlayed?: number, eventsHosted?: number, minutesPlayed?: number): Player{
+    public create(id: string, eventsPlayed?: number, eventsHosted?: number, minutesPlayed?: number, score?: number): Player{
         return this.connection.manager.create(Player, {
             id: id,
             eventsPlayed: eventsPlayed,
             eventsHosted: eventsHosted,
             minutesPlayed: minutesPlayed,
+            score: score
         });
     }
     /** @returns player by user id */

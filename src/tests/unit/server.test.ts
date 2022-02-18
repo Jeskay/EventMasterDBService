@@ -1,6 +1,5 @@
 import { getConnection } from 'typeorm';
 import { DataBaseAPI } from '../../api';
-import { DataBaseManager } from '../../database';
 import { Settings } from '../../entities/settings';
 import connection from '../connection';
 

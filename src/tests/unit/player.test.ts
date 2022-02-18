@@ -1,5 +1,7 @@
 import { getConnection } from "typeorm";
+import { isDeepStrictEqual } from "util";
 import { DataBaseAPI } from "../../api";
+import { Player } from "../../entities/player";
 import connection from "../connection";
 
 beforeAll(async () => {
@@ -32,4 +34,20 @@ test('player properties can be updated', async () => {
     const result = await api.Player.get(posted.id);
     expect(result?.eventsPlayed).toBe(10);
     expect(result?.minutesPlayed).toBe(100);
+});
+
+test('players is sorted by score', async () => {
+    const api = new DataBaseAPI( getConnection() );
+    const amount = 10;
+    const players: Player[] = [];
+    for(let i = 0; i < amount; i++) {
+        players.push(api.Player.create(`Userttt${i}`, 1, 1, 2, 100 - i));
+    }
+    const shuffled = Array.from(players).sort(() => Math.random() - 0.5);
+    await Promise.all(shuffled.map( async element => await api.Player.post(element)));
+
+    const result = await api.Server.rating();
+    expect(result.length).toEqual(players.length);
+    for(let i = 0; i < amount; i++)
+        expect(players[i].id).toBe(result[i].id);
 });

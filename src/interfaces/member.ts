@@ -7,13 +7,18 @@ export class MemberInterface {
     private connection: Connection;
     
     /** Creates GuildMember instance */
-    public create(id: string, guildId: string): GuildMember;
-    public create(id: string, guildId: string, eventsPlayed?: number, eventsHosted?: number, minutesPlayed?: number): GuildMember; 
+    public create(playerId: string, guildId: string, eventsPlayed?: number, eventsHosted?: number, minutesPlayed?: number): GuildMember;
 
-    public create(id: string, guildId: string, eventsPlayed?: number, eventsHosted?: number, minutesPlayed?: number, banned?: boolean): GuildMember{
+    public create(player: Player, guildId: string, eventsPlayed?: number, eventsHosted?: number, minutesPlayed?: number): GuildMember;
+    
+    public create(playerId: string, server: Server, eventsPlayed?: number, eventsHosted?: number, minutesPlayed?: number): GuildMember;
+
+    public create(player: Player, server: Server, eventsPlayed?: number, eventsHosted?: number, minutesPlayed?: number): GuildMember; 
+
+    public create(player: string | Player, server: string | Server, eventsPlayed?: number, eventsHosted?: number, minutesPlayed?: number, banned?: boolean): GuildMember{
         return this.connection.manager.create(GuildMember, {
-            id: id,
-            guildId: guildId,
+            id: player instanceof Player ? player.id : player,
+            guildId: server instanceof Server ? server.guild : server,
             eventsPlayed: eventsPlayed,
             eventsHosted: eventsHosted,
             minutesPlayed: minutesPlayed,
