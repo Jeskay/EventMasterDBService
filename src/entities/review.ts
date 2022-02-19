@@ -6,7 +6,7 @@ export class Review{
     @PrimaryGeneratedColumn()
     id: number;
 
-    @OneToOne(() => Player, player => player.review)
+    @OneToOne(() => Player, player => player.review, { onDelete: "CASCADE" })
     @JoinColumn()
     author: Player;
 

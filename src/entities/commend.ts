@@ -18,11 +18,11 @@ export class Commend {
     @Column()
     duplicates: number = 0;
 
-    @ManyToOne(() => Player, player => player.commendsBy, {primary: true})
+    @ManyToOne(() => Player, player => player.commendsBy, {primary: true, onDelete: "CASCADE" })
     @JoinColumn({name: "authorId"})
     author: Player;
 
-    @ManyToOne(() => Player, player => player.commendsAbout, {primary: true})
+    @ManyToOne(() => Player, player => player.commendsAbout, {primary: true, onDelete: "CASCADE" })
     @JoinColumn({name: "subjectId"})
     subject: Player;
 

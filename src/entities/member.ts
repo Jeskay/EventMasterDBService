@@ -14,7 +14,7 @@ export class GuildMember{
     @JoinColumn({name: 'id'})
     player: Player;
 
-    @ManyToOne(() => Server, server => server.members)
+    @ManyToOne(() => Server, server => server.members, { onDelete: "CASCADE" })
     @JoinColumn({name: "guildId"})
     guild: Server;
 
