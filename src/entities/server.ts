@@ -8,10 +8,10 @@ export class Server {
     @PrimaryColumn()
     guild!: string;
 
-    @OneToMany(() => Occasion, occasion => occasion.server)
+    @OneToMany(() => Occasion, occasion => occasion.server, {cascade: ['remove']})
     events: Occasion[];
     
-    @OneToMany(() => GuildMember, guildmember => guildmember.guild)
+    @OneToMany(() => GuildMember, guildmember => guildmember.guild, {cascade: ['remove']})
     members: GuildMember[];
     
     @Column(() => Settings)

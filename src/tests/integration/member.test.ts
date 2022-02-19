@@ -24,7 +24,7 @@ describe('player / memeber relations', () => {
 
         const membersCreated: GuildMember[] = [];
         for ( var i = 0; i < 10; i++ ) {
-            const server = api.Server.create(`Server${i}`, ["12345", 4, []]);    
+            const server = api.Server.create(`ServerGG${i}`, ["12345", 4, []]);    
             const member = api.Member.create(player, server);
             await api.Server.post(server);
             const postedMember = await api.Member.post(member);

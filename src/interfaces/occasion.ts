@@ -10,10 +10,10 @@ export class OccasionInterface {
     private connection: Connection;
     
     /** Creates Occasion instance */
-    public create(state: OccasionState, announced: boolean, voiceId: string, textId: string, initiatorId: string): Occasion;
-    public create(state: OccasionState, announced: boolean, voiceId: string, textId: string, initiatorId: string, title?: string, description?: string, host?: string): Occasion;
+    public create(server: Server, state: OccasionState, announced: boolean, voiceId: string, textId: string, initiatorId: string): Occasion;
+    public create(server: Server, state: OccasionState, announced: boolean, voiceId: string, textId: string, initiatorId: string, title?: string, description?: string, host?: string): Occasion;
 
-    public create(state: OccasionState, announced: boolean = false, voiceId: string, textId: string, initiatorId: string, title?: string, description?: string, host?: string): Occasion{
+    public create(server: Server, state: OccasionState, announced: boolean = false, voiceId: string, textId: string, initiatorId: string, title?: string, description?: string, host?: string): Occasion{
         return this.connection.manager.create(Occasion, {
             state: state,
             announced: announced,
@@ -23,23 +23,34 @@ export class OccasionInterface {
             initiator: initiatorId,
             Title: title,
             description: description,
+            server: server
         })
     }
-
     /**
      * Adds occasion to the database
-     * @param occasion Server instance
-     * @param guildId guild id
+     * @param occasion Occasion instance
      * @returns posted object
      */
-    public async post(occasion: Occasion, guildId: string): Promise<Occasion> {
-        const server = await this.connection.manager.findOne(Server, {guild: guildId});
-        if(!server) throw new Error("Guild with followed id is not registered.");
+    public async post(occasion: Occasion): Promise<Occasion>;
+
+    public async post(occasion: Occasion): Promise<Occasion> {
         return await this.connection.manager.save(occasion);
     }
 
     /**
-    * Updates occasion instance
+     * Gets Occasion instance
+     * @param id occasion id
+     */
+    public async get(id: number): Promise<Occasion | undefined> {
+        return await this.connection.getRepository(Occasion)
+        .createQueryBuilder("occasion")
+        .leftJoinAndSelect("occasion.server", "server")
+        .where("occasion.id = :id", {id: id})
+        .getOne();
+    }
+
+    /**
+    * Updates Occasion instance
     * @param occasion Occasion instance
     * @param params object with fields and values which need to be updated
     */

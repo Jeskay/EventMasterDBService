@@ -49,16 +49,15 @@ describe('player / review relations', () => {
         const player = await api.Player.post(api.Player.create("3213122"));
         const review = await api.Review.post(api.Review.create(player, "new review", "user", 2333, "http://example"));
         const receivedPlayer = await api.Player.get(player.id);
-        const recievedReview = await api.Review.get(review.id);
-        expect(isDeepStrictEqual(receivedPlayer?.review, recievedReview)).toBeTruthy();
+        expect(receivedPlayer?.review.id).toBe(review.id);
     });
 
-    test('player can\'t be received from review', async () => {
+    test('player can be received from review', async () => {
         const api = new DataBaseAPI( getConnection());
         const player = await api.Player.post(api.Player.create("3213123"));
         const review = await api.Review.post(api.Review.create(player, "new review", "user", 2333, "http://example"));
         const nreview = await api.Review.get(review.id);
-        expect(nreview?.author).toBe(undefined);
+        expect(nreview?.author.id).toBe(player.id);
     });
 });
 describe('filtering reviews', () => {

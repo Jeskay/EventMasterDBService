@@ -10,11 +10,11 @@ export class GuildMember{
     @PrimaryColumn('uuid')
     guildId: string;
 
-    @ManyToOne(() => Player, player => player.membership, {cascade: true})
+    @ManyToOne(() => Player, player => player.membership, { onDelete: "CASCADE" })
     @JoinColumn({name: 'id'})
     player: Player;
 
-    @ManyToOne(() => Server, server => server.members, {cascade: true})
+    @ManyToOne(() => Server, server => server.members)
     @JoinColumn({name: "guildId"})
     guild: Server;
 

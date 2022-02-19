@@ -22,7 +22,11 @@ export class ReviewInterface {
      * @param id id of the review
      */
     public async get(id: number) {
-        return await this.connection.manager.findOne(Review, { id: id });
+        return await this.connection.manager.getRepository(Review)
+        .createQueryBuilder("review")
+        .leftJoinAndSelect("review.author", "player")
+        .where(`review.id = :id`, {id: id})
+        .getOne();
     }
 
     /**

@@ -13,7 +13,7 @@ export class Occasion {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @ManyToOne(() => Server, server => server.events, {cascade: true})
+    @ManyToOne(() => Server, server => server.events)
     server: Server;
 
     @Column('int')
