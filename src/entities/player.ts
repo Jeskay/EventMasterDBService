@@ -1,6 +1,7 @@
-import { Column, CreateDateColumn, Entity, Index, ManyToMany, OneToMany, PrimaryColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Index, ManyToMany, OneToMany, OneToOne, PrimaryColumn } from "typeorm";
 import { Commend } from "./commend";
 import { GuildMember } from "./member";
+import { Review } from "./review";
 import { Tag } from "./tag";
 
 @Entity()
@@ -22,6 +23,9 @@ export class Player{
 
     @Column()
     banned: number = 0;
+
+    @OneToOne(() => Review, review => review.author, {eager: true})
+    review: Review;
 
     @ManyToMany(() => Tag, tag => tag.subscribers)
     subscriptions: Promise<Tag[]>;

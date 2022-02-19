@@ -30,39 +30,13 @@ export class MemberInterface {
      * @param user id of user to find
      * @returns membership of user from a specific guild 
      */
-    public async get(server: string, user: string): Promise<GuildMember>;
-    /**
-     * @param server guild which contains user
-     * @param user id of user to find
-     * @returns membership of user from a specific guild 
-     */
-    public async get(server: Server, user: string): Promise<GuildMember>;
-    /**
-     * @param server id of guild which contains user
-     * @param user user to find
-     * @returns membership of user from a specific guild 
-     */
-    public async get(server: string, user: Player): Promise<GuildMember>;
-    /**
-     * @param server guild which contains user
-     * @param user user to find
-     * @returns membership of user from a specific guild 
-     */
-    public async get(server: Server, user: Player): Promise<GuildMember>;
-
-    public async get(server: string | Server, user: string | Player): Promise<GuildMember> {
-        let member: GuildMember | undefined;
-        if(server instanceof Server) {
-            member = server.members.find((member) => user instanceof Player ? member.player == user : member.id == user);    
-        }
-        else if(user instanceof Player) {
-            member = user.membership.find((member) => member.guildId == server);
-        }
-        else {
-            member = await this.connection.manager.findOne(GuildMember, {id: user, guildId: server});
-        }
-        if(!member) throw new Error("User is not a member of guild.");
-        return member;
+    public async get(serverId: string, userId: string): Promise<GuildMember | undefined> {
+        return await this.connection.manager.getRepository(GuildMember)
+        .createQueryBuilder("guild_member")
+        .leftJoinAndSelect("guild_member.player", "player")
+        .leftJoinAndSelect("guild_member.guild", "guild")
+        .where(`guild_member.id = :id and guild_member."guildId" = :server`, {id: userId, server: serverId})
+        .getOne();
     }
 
     /**

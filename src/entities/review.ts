@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Player } from "./player";
 
 @Entity()
@@ -6,7 +6,7 @@ export class Review{
     @PrimaryGeneratedColumn()
     id: number;
 
-    @OneToOne(() => Player)
+    @OneToOne(() => Player, player => player.review)
     @JoinColumn()
     author: Player;
 
@@ -21,6 +21,9 @@ export class Review{
 
     @Column()
     avatar: string;
+
+    @UpdateDateColumn()
+    updatedDate: Date;
 
     @CreateDateColumn()
     createdAt: Date;

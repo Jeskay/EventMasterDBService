@@ -1,13 +1,15 @@
 import { Connection } from 'typeorm'
 import { Commend } from '../entities/commend';
+import { Player } from '../entities/player';
 import { Review } from '../entities/review';
 
 export class ReviewInterface {
     private connection: Connection;
     
     /** Creates Commend instance */
-    public create(text: string, name: string, discriminator: number, avatar: string) {
+    public create(author: Player, text: string, name: string, discriminator: number, avatar: string) {
         return this.connection.manager.create(Review, {
+            author: author,
             name: name,
             text: text,
             discriminator: discriminator,
@@ -21,6 +23,16 @@ export class ReviewInterface {
      */
     public async get(id: number) {
         return await this.connection.manager.findOne(Review, { id: id });
+    }
+
+    /**
+     * Get reviews filtered by it's property
+    */
+    public async filtered(filterBy: keyof Review = 'updatedDate', order: 'ASC' | 'DESC' = 'DESC') {
+        return this.connection.manager.getRepository(Review)
+        .createQueryBuilder()
+        .orderBy(`"${filterBy}"`, order)
+        .getMany();
     }
 
     /**

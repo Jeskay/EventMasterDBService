@@ -33,7 +33,7 @@ describe('player / memeber relations', () => {
         await api.Player.update(player, {eventsPlayed: 100});
         await Promise.all(membersCreated.map( async member => {
             const result = await api.Member.get(member.guildId, member.id);
-            expect(result.eventsPlayed).not.toBe(100);
+            expect(result?.eventsPlayed).not.toBe(100);
         }));
     });
 
@@ -66,13 +66,13 @@ describe('player / memeber relations', () => {
         expect(isDeepStrictEqual(founded, member)).toBeTruthy();
     });
 
-    test('player instance can\'t be received from member', async () => {
+    test('player instance can be received from member', async () => {
         const api = new DataBaseAPI(getConnection());
         const player = await api.Player.post(api.Player.create('223321'));
         const server = await api.Server.post(api.Server.create("112", ["3321", 4, []]));
         const member = await api.Member.post(api.Member.create(player.id, server.guild, 10, 1, 100));
         const nmember = await api.Member.get(member.guildId, member.id);
-        expect(nmember.player).toBe(undefined);
+        expect(nmember?.player.id).toBe(player.id);
     });
 });
 
@@ -92,12 +92,12 @@ describe('server / member relationship', () => {
         expect(isDeepStrictEqual(founded, member)).toBeTruthy();
     });
 
-    test('server instance can\'t be received from member', async () => {
+    test('server instance can be received from member', async () => {
         const api = new DataBaseAPI(getConnection());
         const player = await api.Player.post(api.Player.create('233321'));
         const server = await api.Server.post(api.Server.create("113", ["3321", 4, []]));
         const member = await api.Member.post(api.Member.create(player.id, server.guild, 10, 1, 100));
         const nmember = await api.Member.get(member.guildId, member.id);
-        expect(nmember.guild).toBe(undefined);
+        expect(nmember?.guild.guild).toBe(server.guild);
     });
 });

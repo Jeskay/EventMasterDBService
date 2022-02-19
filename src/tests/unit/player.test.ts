@@ -18,7 +18,7 @@ beforeEach(async () => {
 
 test('player instances can be created and deleted', async () => {
     const api = new DataBaseAPI(getConnection());
-    const player = api.Player.create("123");
+    const player = api.Player.create("1");
     const posted = await api.Player.post(player);
     const result = await api.Player.get(posted.id);
     expect(result?.id).toEqual(posted.id);
