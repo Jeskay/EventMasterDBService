@@ -8,5 +8,5 @@ export class Tag {
 
     @ManyToMany(() => Player,player => player.subscriptions)
     @JoinTable()
-    subscribers: Promise<Player[]>;
+    subscribers: Player[];
 }

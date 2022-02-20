@@ -1,4 +1,5 @@
 import { Connection } from 'typeorm'
+import { Player } from '../entities/player';
 import { Tag } from '../entities/tag';
 
 
@@ -26,7 +27,44 @@ export class TagInterface {
     /**
      * Removes tag from the database
      * @returns removed object */
-    public get = async(title: string) => await this.connection.manager.findOne(Tag, {title: title});
+    public async get(title: string, loadRelations: boolean = false) {
+        if(!loadRelations) 
+            return await this.connection.manager.findOne(Tag, {title: title});
+        else return await this.connection.getRepository(Tag)
+        .createQueryBuilder("tag")
+        .where("tag.title = :title", {title: title})
+        .leftJoinAndSelect("tag.subscribers", "player")
+        .getOne();
+    } 
+    /**
+     * Add tag to player's subscriptions
+     * @param player Player instance
+     * @param tag Tag instance
+    */
+    public async subscribe(tag: Tag, player: Player) {
+        if(!tag.subscribers) tag.subscribers = [];
+        tag.subscribers.push(player);
+        return await this.connection.manager.save(tag);
+    }
+    
+    /**
+     * Remove tag from player's subscriptions
+     * @param player Player instance
+     * @param tag Tag instance
+    */
+    public async unsubscribe(tag: Tag, player: Player): Promise<Tag>;
+    /**
+     * Remove tag from player's subscriptions
+     * @param userId id for user to remove
+     * @param tag Tag instance
+    */
+    public async unsubscribe(tag: Tag, userId: string): Promise<Tag>;
+
+    public async unsubscribe(tag: Tag, player: Player | string): Promise<Tag> {
+        if(!tag.subscribers) tag.subscribers = [];
+        tag.subscribers = tag.subscribers.filter(element => element.id != (player instanceof Player ? player.id :player));
+        return await this.connection.manager.save(tag);
+    }
     
     /**
      * Removes tag

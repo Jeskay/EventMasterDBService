@@ -28,7 +28,7 @@ export class Player{
     review: Review;
 
     @ManyToMany(() => Tag, tag => tag.subscribers)
-    subscriptions: Promise<Tag[]>;
+    subscriptions: Tag[];
 
     @OneToMany(() => Commend, commend => commend.author, {eager: true})
     commendsBy: Commend[];

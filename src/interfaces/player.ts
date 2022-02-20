@@ -1,5 +1,6 @@
 import { Connection } from 'typeorm'
 import { Player } from '../entities/player';
+import { Tag } from '../entities/tag';
 
 export class PlayerInterface {
     private connection: Connection;
@@ -23,12 +24,40 @@ export class PlayerInterface {
             return this.connection.manager.findOne(Player, {id: id});
         else return await this.connection.getRepository(Player)
         .createQueryBuilder("player")
-        .leftJoinAndSelect("player.subscriptions", "tag")
         .where("player.id = :id", {id: id})
+        .leftJoinAndSelect("player.subscriptions", "tag")
         .leftJoinAndSelect("player.membership", "guild_member")
         .getOne();
     }
+    /**
+     * Add tag to player's subscriptions
+     * @param player Player instance
+     * @param tag Tag instance
+     */
+    public async subscribe(player: Player, tag: Tag) {
+        if(!player.subscriptions) player.subscriptions = [];
+        player.subscriptions.push(tag);
+        return await this.connection.manager.save(player);
+    }
 
+    /**
+     * Remove tag from player's subscriptions
+     * @param player Player instance
+     * @param tag Tag instance
+    */
+    public async unsubscribe(player: Player, tag: Tag): Promise<Player>;
+    /**
+     * Remove tag from player's subscriptions
+     * @param player Player instance
+     * @param title title of subscription
+    */
+    public async unsubscribe(player: Player, title: string): Promise<Player>;
+    
+    public async unsubscribe(player: Player, tag: Tag | string): Promise<Player> {
+        if(!player.subscriptions) player.subscriptions = [];
+        player.subscriptions = player.subscriptions.filter(element => element.title != (tag instanceof Tag ? tag.title : tag));
+        return await this.connection.manager.save(player);
+    }
     /**
      * Adds player to the database
      * @param player Player instance
