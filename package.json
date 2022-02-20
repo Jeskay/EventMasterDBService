@@ -8,7 +8,7 @@
     "dist"
   ],
   "scripts": {
-    "test": "jest -i",
+    "test": "yarn build && jest -i",
     "build": "tsc",
     "prepare": "npm run build"
   },
