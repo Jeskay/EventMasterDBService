@@ -1,5 +1,6 @@
 import {Connection} from 'typeorm';
 import { CommendInterface, MemberInterface, OccasionInterface, PlayerInterface, ReviewInterface, ServerInterface, TagInterface } from './interfaces';
+import 'reflect-metadata';
 
 export class DataBaseAPI {
 

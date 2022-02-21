@@ -5,7 +5,7 @@ const config: Config.InitialOptions = {
   clearMocks: true,
   testEnvironment: 'node',
   testMatch: [
-    '**/dist/tests/**/*.test.js',
+    '**/lib/tests/**/*.test.js',
   ]
 };
 export default config;
