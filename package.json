@@ -1,9 +1,9 @@
 {
   "name": "eventmaster_db_service",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Service for database access",
   "main": "lib/api.js",
-  "types": "lib/api.d.ts",
+  "typings": "lib/api",
   "files": [
     "lib",
     "jest.config.ts"
