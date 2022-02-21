@@ -1,11 +1,13 @@
 {
   "name": "eventmaster_db_service",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Service for database access",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "index.js",
+    "jest.config.ts"
   ],
   "scripts": {
     "test": "yarn build && jest -i",
@@ -14,7 +16,7 @@
   },
   "author": "Jeskay",
   "license": "MIT",
-  "private": true,
+  "private": false,
   "devDependencies": {
     "@types/jest": "^27.4.0",
     "@types/node": "^17.0.17",
